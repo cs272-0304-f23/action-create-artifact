@@ -1,0 +1,11 @@
+name: 'Create Grade Artifact'
+description: 'Creates an artifact showing the results from `go-test` to be consumed by `phpeterson-usf/autograder`'
+
+inputs:
+  score:
+    description: 'Score produced from a `colmpat/go-test-action` run. In the format `pts_earned/pts_actual`'
+    required: true
+
+runs:
+  using: 'node16'
+  main: 'index.js'
