@@ -65,13 +65,10 @@ class Runner {
         const pushed = github.context.payload.pushed_at;
         if(pushed) {
           submissionDate = luxon.DateTime.fromSeconds(parseInt(pushed))
-        }
-        break;
-      case 'release':
-        // created_at is an ISO date string for this release
-        const created = github.context.payload.release.created_at;
-        if(created) {
-          submissionDate = luxon.DateTime.fromISO(created)
+        } else {
+          console.log(`\tPayload does not contain pushed_at timestamp. Payload: ${JSON.stringify(github.context.payload)}`)
+          console.log(`\tUsing current time as submission date.`)
+          submissionDate = luxon.DateTime.now()
         }
         break;
     }
@@ -89,6 +86,7 @@ class Runner {
    */
   private checkSubmissionDate(submittedDate: luxon.DateTime){
     // TODO
+    console.log(`Checking submission date: ${submittedDate.toString()}`)
   }
 }
 
