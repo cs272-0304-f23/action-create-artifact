@@ -1,7 +1,7 @@
-import core from "@actions/core"
-import github from "@actions/github"
+import * as core from "@actions/core"
+import * as github from "@actions/github"
 
-import luxon from "luxon"
+import * as luxon from "luxon"
 const zone = 'America/Los_Angeles';
 const eod = 'T23:59:59';
 luxon.Settings.defaultZone = zone;
