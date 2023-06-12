@@ -1,10 +1,10 @@
-import * as core from '@actions/core'
-import * as github from '@actions/github'
+import core from "@actions/core"
+import github from "@actions/github"
 
-import { DateTime, Settings } from 'luxon'
+import luxon from "luxon"
 const zone = 'America/Los_Angeles';
 const eod = 'T23:59:59';
-Settings.defaultZone = zone;
+luxon.Settings.defaultZone = zone;
 
 class Runner {
   score = ''
@@ -54,8 +54,8 @@ class Runner {
    * @returns The submission date
    * @throws An error if the submission date is not in the correct format
    */
-  private parseSubmissionDate(): DateTime {
-    let submissionDate: DateTime | undefined;
+  private parseSubmissionDate(): luxon.DateTime {
+    let submissionDate: luxon.DateTime | undefined;
     
     console.log('Parsing submission date from GitHub context...')
     switch(github.context.eventName) {
@@ -64,14 +64,14 @@ class Runner {
         // pushed_at is a timestamp for this commit
         const pushed = github.context.payload.pushed_at;
         if(pushed) {
-          submissionDate = DateTime.fromSeconds(parseInt(pushed))
+          submissionDate = luxon.DateTime.fromSeconds(parseInt(pushed))
         }
         break;
       case 'release':
         // created_at is an ISO date string for this release
         const created = github.context.payload.release.created_at;
         if(created) {
-          submissionDate = DateTime.fromISO(created)
+          submissionDate = luxon.DateTime.fromISO(created)
         }
         break;
     }
@@ -87,7 +87,7 @@ class Runner {
   /**
    * Checks the given submission date and calculates the late penalty if applicable
    */
-  private checkSubmissionDate(submittedDate: DateTime){
+  private checkSubmissionDate(submittedDate: luxon.DateTime){
     // TODO
   }
 }
