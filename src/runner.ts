@@ -62,11 +62,11 @@ class Runner {
       case 'workflow_dispatch':
       case 'push':
         // pushed_at is a timestamp for this commit
-        const pushed = github.context.payload.pushed_at;
+        const pushed = github.context.payload.repository?.pushed_at;
         if(pushed) {
           submissionDate = luxon.DateTime.fromSeconds(parseInt(pushed))
         } else {
-          console.log(`\tPayload does not contain pushed_at timestamp. Payload: ${JSON.stringify(github.context.payload)}`)
+          console.log(`\tPayload's repository does not contain pushed_at timestamp. Payload.repository: ${JSON.stringify(github.context.payload.repository)}`)
           console.log(`\tUsing current time as submission date.`)
           submissionDate = luxon.DateTime.now()
         }
