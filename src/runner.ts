@@ -118,8 +118,7 @@ class Runner {
     let daysLate = submissionDate.diff(this.dueDate, 'days').days // eg. => { 'days': 0.015 }.days => 0.015
     daysLate = Math.ceil(daysLate)
 
-    console.log('Submission is late.')
-    console.log(`${daysLate} days late`)
+    console.log(`Submission is ${daysLate} days late`)
     return daysLate
   }
 
@@ -167,14 +166,14 @@ class Runner {
     core.endGroup();
     */
 
-    let gradeSummary = Object.entries(gradeResults).map(([key, value]) => {
-      return `<b>${key}</b>: ${value}`
-    }).join('<br>')
-
     core.summary
       .addHeading('Grade Deadline Results')
-      .addRaw('<div align="center">') // center alignment hack
-      .addRaw(`<p>${gradeSummary}</p>`)
+      .addRaw('<div>')
+      .addHeading('Late Penalty', 2)
+      .addQuote(`note: The late penalty is ${gradeResults.latePenalty * 100}% of the possible points per day late with a maximum late penalty of ${gradeResults.maxPenalty * 100}% of the possible points.`)
+      .addRaw(`<p>Days Late: ${gradeResults.daysLate}</p>`)
+      .addRaw(`<p>Points Deducted: -${gradeResults.pointsDeducted} Points</p>`)
+      .addRaw(`<p>Grade: ${gradeResults.grade} Points (${(gradeResults.grade / gradeResults.possiblePoints * 100).toFixed(1)}%)</p>`)
       .addRaw('</div>')
       .write()
   }
