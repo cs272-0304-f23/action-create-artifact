@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import * as artifact from "@actions/artifact";
@@ -155,7 +156,6 @@ class Runner {
   }
 
   private async createArtifact(gradeResults: GradeResults) {
-    /*
     core.startGroup('Uploading artifact...');
     const filename = 'grade-results.json';
     fs.writeFileSync(filename, JSON.stringify(gradeResults));
@@ -164,16 +164,15 @@ class Runner {
     const response = await client.uploadArtifact('grade-results', [filename], '.');
     console.log(`Uploaded: ${JSON.stringify(response)}`);
     core.endGroup();
-    */
 
     core.summary
       .addHeading('Grade Deadline Results')
       .addRaw('<div>')
-      .addHeading('Late Penalty', 2)
+      .addHeading('Late Penalty', 3)
       .addQuote(`note: The late penalty is ${gradeResults.latePenalty * 100}% of the possible points per day late with a maximum late penalty of ${gradeResults.maxPenalty * 100}% of the possible points.`)
-      .addRaw(`<p>Days Late: ${gradeResults.daysLate}</p>`)
-      .addRaw(`<p>Points Deducted: -${gradeResults.pointsDeducted} Points</p>`)
-      .addRaw(`<p>Grade: ${gradeResults.grade} Points (${(gradeResults.grade / gradeResults.possiblePoints * 100).toFixed(1)}%)</p>`)
+      .addRaw(`<p>Days Late: ${gradeResults.daysLate}<br>Points Deducted: -${gradeResults.pointsDeducted} Points</p>`)
+      .addHeading('Grade', 3)
+      .addRaw(`<p>Autograder Results: ${gradeResults.startingPoints}<br>Grade: <code>${gradeResults.grade}/${gradeResults.possiblePoints}</code> (${(gradeResults.grade / gradeResults.possiblePoints * 100).toFixed(1)}%)</p>`)
       .addRaw('</div>')
       .write()
   }
